@@ -1,4 +1,6 @@
+import { clear } from "@testing-library/user-event/dist/clear.js";
 import React, {useState} from "react";
+import CompletedList from "./components/CompletedList.js";
 import Navbar from './components/Navbar.js'
 import TheList from "./components/TheList.js";
 
@@ -6,16 +8,17 @@ function App() {
 const [userName, setUserName] = useState('Andrew');
 const [list, setList] = useState([{task: "Dishes", done:false}, {task: "Laundry", done:false}, {task: "Change Brakes", done:false}]);
 const [newTodo, setNewTodo] = useState("");
-
+const [completed, setCompleted] = useState([]);
+const [seeCompleted, setSeeCompleted] = useState(false)
 
 //reates rows for list
 const createRow = () => (
   list.map((item) => <TheList key={item.task} item={item} onToggleDone={handleToggleDone} onDeleteBtn={handleDeleteBtn}/>)
-)
+);
 //saves task input into newTodo state
  const handleInputChange = (event) => {
     setNewTodo(event.target.value)
- }
+ };
  //handles saving new task to list
  const handleAddBtn = () => {
   
@@ -34,8 +37,8 @@ const createRow = () => (
     ])
     document.querySelector('.input').value = '';
     setNewTodo('')
- }
-
+ };
+// handles deleteBtn to remove task from list
  const handleDeleteBtn = (todo) => {
   for(let i = 0; i < list.length; i++) {
     if(list[i].task === todo.task) {
@@ -45,9 +48,7 @@ const createRow = () => (
       setList(newArr)
     }
   }
- }
-
- console.log(list)
+ };
 // handles changing state of done from ture to false
   const handleToggleDone = (todo) => {
      for(let i = 0; i < list.length; i++) {
@@ -58,7 +59,24 @@ const createRow = () => (
         setList(items)
       }
      }
+     removeCompleted(todo)
   }
+  // handles removing completed from list and moving to completed array
+  const removeCompleted = (todo) => {
+        let intervalId = setTimeout(() => {
+          setCompleted([...completed, todo])
+          handleDeleteBtn(todo)
+
+        }, 1000);
+        
+      }
+  
+  const handleCompletedBtn = () => {
+    if(seeCompleted === false) {
+      setSeeCompleted(true)
+    } else {setSeeCompleted(false)}
+  }
+  
  
   return (
     <div className="App">
@@ -82,6 +100,11 @@ const createRow = () => (
           </table>
         </div>
       </div>
+      <div className="row m-2">
+        <div className="col-12">
+          {seeCompleted === false ? <button className="btn btn-success" onClick={handleCompletedBtn}>See Completed</button>: <CompletedList onCompletedBtn={handleCompletedBtn} completed={completed}/>}
+        </div>
+      </div>
     </div>
   );
 }
@@ -89,4 +112,4 @@ const createRow = () => (
 export default App;
 
 
-/// if completed for 10sec auto moves to a completed array
+/// creating see completed list button and compete list of completed task
