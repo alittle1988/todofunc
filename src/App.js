@@ -5,11 +5,12 @@ import TheList from "./components/TheList.js";
 function App() {
 const [userName, setUserName] = useState('Andrew');
 const [list, setList] = useState([{task: "Dishes", done:false}, {task: "Laundry", done:false}, {task: "Change Brakes", done:false}]);
-const [newTodo, setNewTodo] = useState("")
+const [newTodo, setNewTodo] = useState("");
+
 
 //reates rows for list
 const createRow = () => (
-  list.map((item) => <TheList key={item.task} item={item} onToggleDone={handleToggleDone}/>)
+  list.map((item) => <TheList key={item.task} item={item} onToggleDone={handleToggleDone} onDeleteBtn={handleDeleteBtn}/>)
 )
 //saves task input into newTodo state
  const handleInputChange = (event) => {
@@ -28,11 +29,22 @@ const createRow = () => (
       return false
     }
   }
-
     setList([
       ...list, {task: newTodo, done:false}
     ])
+    document.querySelector('.input').value = '';
     setNewTodo('')
+ }
+
+ const handleDeleteBtn = (todo) => {
+  for(let i = 0; i < list.length; i++) {
+    if(list[i].task === todo.task) {
+      let items = [...list];
+      let item = items[i];
+      let newArr = list.filter(task => task !== item)
+      setList(newArr)
+    }
+  }
  }
 
  console.log(list)
@@ -53,13 +65,14 @@ const createRow = () => (
       <div className="row m-2">
         <Navbar name={userName}></Navbar>
         <div className="col-12">
-        <input type='text' onChange={handleInputChange}/>
+        <input className="input" type='text' onChange={handleInputChange}/>
         <button className="btn btn-primary m-2" onClick={handleAddBtn}>Add</button>
           <table className="table">
             <thead>
               <tr>
                 <th>Tasks</th>
                 <th>Complete</th>
+                <th className="text-center">Delete</th>
               </tr>
             </thead>
               <tbody>
@@ -76,3 +89,4 @@ const createRow = () => (
 export default App;
 
 
+/// if completed for 10sec auto moves to a completed array
