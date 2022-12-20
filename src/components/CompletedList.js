@@ -3,7 +3,7 @@ import React from "react";
 export default function CompletedList(props) {
     const {completed} = props
     const createTd = () => (
-        completed.map((item) => <tr><td>{item.task}</td></tr>)
+        completed.map((item) => <tr key={item.task}><td>{item.task}</td></tr>)
     )
     
     return (<>
