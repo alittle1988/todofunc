@@ -3,13 +3,27 @@ import React, {useState} from "react";
 import CompletedList from "./components/CompletedList.js";
 import Navbar from './components/Navbar.js'
 import TheList from "./components/TheList.js";
+import Login from "./components/Login.js";
 
 function App() {
-const [userName, setUserName] = useState('Andrew');
+const [userName, setUserName] = useState('');
 const [list, setList] = useState([{task: "Dishes", done:false}, {task: "Laundry", done:false}, {task: "Change Brakes", done:false}]);
 const [newTodo, setNewTodo] = useState("");
 const [completed, setCompleted] = useState([]);
 const [seeCompleted, setSeeCompleted] = useState(false)
+const [login, setLogin] =useState(false)
+
+//handles username input
+const handleUserUpdate = (e) => {
+  setUserName(e.target.value)
+}
+const handleLogin = () => {
+  if(userName === '') {
+    alert('Please Enter Name!')
+  } else{
+    setLogin(true)
+  }
+}
 
 //reates rows for list
 const createRow = () => (
@@ -77,7 +91,9 @@ const createRow = () => (
     } else {setSeeCompleted(false)}
   }
   
- 
+ if(login === false) {
+  return <Login onUserUpdate={handleUserUpdate} onLogin={handleLogin} />
+ } else {
   return (
     <div className="App">
       <div className="row m-2">
@@ -106,7 +122,7 @@ const createRow = () => (
         </div>
       </div>
     </div>
-  );
+  );}
 }
 
 export default App;
