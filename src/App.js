@@ -11,7 +11,8 @@ const [list, setList] = useState([{task: "Dishes", done:false}, {task: "Laundry"
 const [newTodo, setNewTodo] = useState("");
 const [completed, setCompleted] = useState([]);
 const [seeCompleted, setSeeCompleted] = useState(false)
-const [login, setLogin] =useState(false)
+const [login, setLogin] =useState(true);
+const [NumTask, setNumTask] = useState(list.length)
 
 //handles username input
 const handleUserUpdate = (e) => {
@@ -51,6 +52,8 @@ const createRow = () => (
     ])
     document.querySelector('.input').value = '';
     setNewTodo('')
+    setNumTask((prevNum) => prevNum + 1)
+    
  };
 // handles deleteBtn to remove task from list
  const handleDeleteBtn = (todo) => {
@@ -62,6 +65,7 @@ const createRow = () => (
       setList(newArr)
     }
   }
+  setNumTask((prevNum) => prevNum - 1)
  };
 // handles changing state of done from ture to false
   const handleToggleDone = (todo) => {
@@ -90,6 +94,7 @@ const createRow = () => (
       setSeeCompleted(true)
     } else {setSeeCompleted(false)}
   }
+
   
  if(login === false) {
   return <Login onUserUpdate={handleUserUpdate} onLogin={handleLogin} />
@@ -101,6 +106,7 @@ const createRow = () => (
         <div className="col-12">
         <input className="input" type='text' onChange={handleInputChange}/>
         <button className="btn btn-primary m-2" onClick={handleAddBtn}>Add</button>
+        <h4>Tasks {NumTask}</h4>
           <table className="table">
             <thead>
               <tr>
