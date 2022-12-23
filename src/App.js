@@ -11,7 +11,7 @@ const [list, setList] = useState([{task: "Dishes", done:false}, {task: "Laundry"
 const [newTodo, setNewTodo] = useState("");
 const [completed, setCompleted] = useState([]);
 const [seeCompleted, setSeeCompleted] = useState(false)
-const [login, setLogin] =useState(true);
+const [login, setLogin] = useState(false);
 const [NumTask, setNumTask] = useState(list.length)
 
 //handles username input
